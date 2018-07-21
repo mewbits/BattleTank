@@ -33,7 +33,28 @@ void ATankPlayerController::AimTowardsCrosshairs()
 {
 	if (!GetControlledTank()) { return; }
 
-	FVector HitLocation;//Get world location if linetraced through crosshairs
+	FVector HitLocation; // Out Parameter
+
+	
 	//If it hits the landscape
-		//Tell controlled pawn to aim at this point
+	if (GetSightRayHitLocation(HitLocation)) // side effect, ray trace
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *HitLocation.ToString());
+		//TODO: Tell controlled pawn to aim at this point
+	}
+
+
+}
+
+//Get world location of linetrace through crosshairs, true if hits landscape
+bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
+{
+	// Find the Crosshair Position
+	int32 ViewportSizeX, ViewportSizeY;
+	GetViewportSize(ViewportSizeX, ViewportSizeY);
+	auto ScreenLocation = FVector2D(ViewportSizeX*CrossHairXLocation, ViewportSizeY*CrossHairYLocation);
+	
+	// "De-project" the screen position of the crosshair to the world direction
+	// Line-trace along that direction, and see what we hit (up to max range)
+	return true;
 }

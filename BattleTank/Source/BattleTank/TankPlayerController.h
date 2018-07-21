@@ -25,4 +25,12 @@ private:
 
 	//Move Barrel to aim towards where aiming crosshairs intersects the world
 	void AimTowardsCrosshairs();
+
+	//Return an OUT parameter, True if hit landscape
+	bool GetSightRayHitLocation(FVector& OutHitLocation) const;
+
+	UPROPERTY (EditAnywhere)
+		float CrossHairXLocation = 0.5f;
+	UPROPERTY (EditAnywhere)
+		float CrossHairYLocation = 0.33333f;
 };
