@@ -5,6 +5,7 @@
 
 //Forward Declarations
 class UTankBarrel;
+class UTankTurret;
 
 // Sets default values
 ATank::ATank()
@@ -39,4 +40,10 @@ void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
 }
+
+void ATank::SetTurretReference(UTankTurret* TurretToSet)
+{
+	TankAimingComponent->SetTurretReference(TurretToSet);
+}
+
 
