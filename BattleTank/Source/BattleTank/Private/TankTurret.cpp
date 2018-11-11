@@ -12,8 +12,8 @@ void UTankTurret::Pivot(float RelativeSpeed)
 
 	auto PivotChange = RelativeSpeed * MaxDegreesPerSecond * GetWorld()->DeltaTimeSeconds;
 
-	auto RawNewPivot = RelativeRotation.Yaw + PivotChange;
+	auto Pivot = RelativeRotation.Yaw + PivotChange;
 
-	SetRelativeRotation(FRotator(0, RawNewPivot, 0));
+	SetRelativeRotation(FRotator(0, Pivot, 0));
 }
 

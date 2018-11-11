@@ -29,16 +29,20 @@ protected:
 	UTankAimingComponent * TankAimingComponent = nullptr;
 
 public:	
-	void AimAt(FVector HitLocation);
-
+	
 	UFUNCTION(BlueprintCallable, Category = Setup)
 		void SetBarrelReference(UTankBarrel* BarrelToSet);
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
 		void SetTurretReference(UTankTurret* TurretToSet);
 
+	UFUNCTION(BlueprintCallable, Category = Firing)
+		void Fire();
+
 	UPROPERTY(EditAnywhere, Category = Firing)
-		float LaunchSpeed = 100000.f; //TODO Find sensible default value
+		float LaunchSpeed = 4000.f;
+
+	void AimAt(FVector HitLocation);
 
 private:
 	// Called to bind functionality to input
