@@ -1,7 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankTurret.h"
+#include "ConstructorHelpers.h"
 
+
+// Sets default values
+UTankTurret::UTankTurret()
+{
+	//Mesh
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>StaticMeshTurret(TEXT("StaticMesh'/Game/Meshes/Static/Tank/SM_TankTurret.SM_TankTurret'"));
+	if (StaticMeshTurret.Object)
+		SetStaticMesh(StaticMeshTurret.Object);
+}
 
 void UTankTurret::Pivot(float RelativeSpeed)
 {

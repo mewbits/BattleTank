@@ -7,7 +7,7 @@
 #include "TankBarrel.generated.h"
 
 // The Barrel of the Tank
-UCLASS( ClassGroup = (Custom), meta = (BlueprintSpawnableComponent), hidecategories = ("Collision"))
+UCLASS( ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API UTankBarrel : public UStaticMeshComponent
 {
 	GENERATED_BODY()
@@ -17,6 +17,9 @@ public:
 	void Elevate(float RelativeSpeed);
 
 private:
+	
+	// Sets default values for this Static Mesh Component's properties
+	UTankBarrel();
 	
 	// Maximum degrees the barrel can move per second
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
