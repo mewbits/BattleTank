@@ -44,6 +44,8 @@ public:
 
 	void AimAt(FVector HitLocation);
 
+	// TODO check best protection
+
 private:
 	
 	// Sets default values for this pawn's properties
