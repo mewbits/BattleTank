@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Raptagon Studios Ltd.
 
 #include "TankAIController.h"
 #include "public/Tank.h"

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Raptagon Studios Ltd.
 
 #pragma once
 
@@ -9,6 +9,15 @@
 #include "Components/StaticMeshComponent.h"
 #include "TankAimingComponent.generated.h"
 
+// creating the enumeration for storing the fireing status
+UENUM()
+enum class EFiringState : uint8
+{
+	Reloading,
+	Aiming,
+	Locked
+};
+
 //Forward Declaration
 class UTankBarrel; 
 class UTankTurret;
@@ -18,17 +27,23 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
+protected:
+
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	EFiringState FiringState = EFiringState::Reloading;
+
 public:	
-	// Sets default values for this component's properties
-	UTankAimingComponent();
+
+	// Setup the left anf right tank tracks
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 
-	void SetBarrelReference(UTankBarrel* BarrelToSet);
-
-	void SetTurretReference(UTankTurret* TurretToSet);
-	
 private:
+	// Sets default values for this component's properties
+	UTankAimingComponent();
+	
 	UTankBarrel* Barrel = nullptr;
 
 	UTankTurret* Turret = nullptr;

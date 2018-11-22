@@ -22,15 +22,15 @@ private:
 	UTankBarrel();
 	
 	// Maximum degrees the barrel can move per second
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float MaxDegreesPerSecond = 5.f;
 
 	// Minimim elevation in degrees the barrel can move to.
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float MinElevationDegrees = 0.f; 
 
 	// Maximum elevation in degrees the barrel can move to.
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float MaxElevationDegrees = 20.f;
 	
 	

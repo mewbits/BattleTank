@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Raptagon Studios Ltd.
 
 #include "TankMovementComponent.h"
 #include "TankTrack.h"
@@ -22,8 +22,6 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	auto RightThrow = FVector::CrossProduct(TankForward, AIForwardIntention).Z;
 	
 	IntendTurnRight(RightThrow);
-
-	//UE_LOG(LogTemp, Warning, TEXT("%s Move Velocity: %s"), *TankName);
 }
 
 void UTankMovementComponent::IntendMoveForward(float Throw)
@@ -33,8 +31,6 @@ void UTankMovementComponent::IntendMoveForward(float Throw)
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(Throw);
 
-	//TODO Prevent double-speed due to dual control use
-
 }
 
 void UTankMovementComponent::IntendTurnRight(float Throw)
@@ -43,8 +39,6 @@ void UTankMovementComponent::IntendTurnRight(float Throw)
 
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(-Throw);
-
-	//TODO Prevent double-speed due to dual control use
 
 }
 
