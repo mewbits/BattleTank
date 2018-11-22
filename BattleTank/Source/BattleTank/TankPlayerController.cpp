@@ -1,18 +1,22 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Raptagon Studios Ltd.
 
 #include "TankPlayerController.h"
 #include "public/Tank.h"
+#include "TankAimingComponent.h"
 #include "BattleTank.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	auto ControlledTank = GetControlledTank();
-	if (!ControlledTank)
+	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	if (AimingComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Player Controller not Possesing a tank!"));
+		FoundAimingComponent(AimingComponent);
 	}
-
+	else
+	{
+		UE_LOG (LogTemp, Warning, TEXT("Player controller can't find the aiming compoenent at Begin Play"))
+	}
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
