@@ -1,7 +1,9 @@
 // Copyright Raptagon Studios Ltd.
 
 #include "TankAIController.h"
-#include "public/Tank.h"
+#include "TankAimingComponent.h"
+
+//depends on Movement Component via pathfinding system
 
 void ATankAIController::BeginPlay()
 {
@@ -12,21 +14,20 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	auto ControlledTank = Cast<ATank>(GetPawn());
-
-	if (PlayerTank)
-	{
-		// Move towards player
-		MoveToActor(PlayerTank, AcceptanceRadius, true, true, false, 0, true);
-
-
-		// Aim Turret Towards Player
-		ControlledTank->AimAt(PlayerTank->GetActorLocation());
+	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 	
-		// Fire if ready
-		ControlledTank->Fire(); // TODO Limit Fireing rate
-	}
+
+	if (!PlayerTank) { return; }
+	// Move towards player
+	MoveToActor(PlayerTank, AcceptanceRadius, true, true, false, 0, true);		
+
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!AimingComponent) { return; }
+	// Aim Turret Towards Player
+	AimingComponent->AimAt(PlayerTank->GetActorLocation());
+
+	// Fire if ready
+	AimingComponent->Fire();
 
 }
 
