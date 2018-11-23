@@ -37,7 +37,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ReloadTimeInSeconds = 3.f;
 
-	double LastFireTime = 0.f;
+	float LastFireTime = 0.f;
 
 public:	
 
@@ -69,7 +69,11 @@ private:
 
 	UTankTurret* Turret = nullptr;
 
-	void MoveBarrelTowards(FVector AimDirection);
+	FVector AimDirection;
 
-	void MoveTurretTowards(FVector AimDirection);
+	void MoveBarrelTowards();
+
+	void MoveTurretTowards();
+
+	bool IsBarrelMoving();
 };

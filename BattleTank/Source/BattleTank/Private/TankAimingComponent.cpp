@@ -17,26 +17,29 @@ void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	//First Fire should be after initial Reload
-	LastFireTime = FPlatformTime::Seconds();
-}
-
-void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
-{
-	if((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds)
-	{
-		FiringState = EFiringState::Reloading;
-	}
-	else if ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds)
-	{
-		FiringState = EFiringState::Aiming;
-	}
-	//TODO Handle Aiming and Locked States
+	LastFireTime = GetWorld()->GetTimeSeconds();
 }
 
 void UTankAimingComponent::Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
 	Barrel = BarrelToSet;
 	Turret = TurretToSet;
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+{
+	if((GetWorld()->GetTimeSeconds() - LastFireTime) < ReloadTimeInSeconds)
+	{
+		FiringState = EFiringState::Reloading;
+	}
+	else if (IsBarrelMoving())
+	{
+		FiringState = EFiringState::Aiming;
+	}
+	else
+	{
+		FiringState = EFiringState::Locked;
+	}
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation)
@@ -62,15 +65,15 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 	
 	if (bHaveAimSolution)
 	{
-		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-		MoveBarrelTowards(AimDirection);
-		MoveTurretTowards(AimDirection);
+		AimDirection = OutLaunchVelocity.GetSafeNormal();
+		MoveBarrelTowards();
+		MoveTurretTowards();
 	}
 
 	return;
 }
 
-void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+void UTankAimingComponent::MoveBarrelTowards()
 {
 	if (!Barrel) { return; }
 	// Work out difference between current barrel rotation and AimDirection
@@ -81,7 +84,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	Barrel->Elevate(DeltaRotator.Pitch);
 }
 
-void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
+void UTankAimingComponent::MoveTurretTowards()
 {
 	if (!Turret) { return; }
 	// Work out difference between current Turret rotation and AimDirection
@@ -90,6 +93,13 @@ void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
 	auto DeltaRotator = AimAsRotator - TurretRotator;
 
 	Turret->Pivot(DeltaRotator.Yaw);
+}
+
+bool UTankAimingComponent::IsBarrelMoving()
+{
+	if (!Barrel) { return false; }
+	auto BarrelForward = Barrel->GetForwardVector();
+	return !BarrelForward.Equals(AimDirection, 0.01);
 }
 
 void UTankAimingComponent::Fire()
