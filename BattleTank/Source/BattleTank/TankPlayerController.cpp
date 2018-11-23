@@ -32,10 +32,13 @@ void ATankPlayerController::AimTowardsCrosshairs()
 
 	FVector HitLocation; // Out Parameter
 	
+	bool HitSometing = GetSightRayHitLocation(HitLocation);
+	UE_LOG(LogTemp, Warning, TEXT("Found Hit Location: %i"), HitSometing)
 	//If it hits the landscape
-	if (GetSightRayHitLocation(HitLocation)) // side effect, ray trace
+	if (HitSometing) // side effect, ray trace
 	{
 		AimingComponent->AimAt(HitLocation);
+		
 	}
 }
 
