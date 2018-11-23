@@ -22,7 +22,6 @@ void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	AimTowardsCrosshairs();
-	
 }
 
 void ATankPlayerController::AimTowardsCrosshairs()
@@ -37,8 +36,6 @@ void ATankPlayerController::AimTowardsCrosshairs()
 	{
 		AimingComponent->AimAt(HitLocation);
 	}
-
-
 }
 
 //Get world location of linetrace through crosshairs, true if hits landscape
@@ -56,7 +53,6 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 		return GetLookVectorHitLocation(LookDirection, HitLocation);
 	}
 
-	
 	return false;
 }
 
@@ -65,7 +61,6 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 	FVector CameraLocation; // To be discarded
 
 	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraLocation, LookDirection);
-
 }
 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const

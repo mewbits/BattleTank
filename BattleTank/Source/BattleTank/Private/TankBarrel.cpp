@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Raptagon Studios Ltd.
 
 #include "TankBarrel.h"
 #include "BattleTank.h"
@@ -29,5 +29,3 @@ void UTankBarrel::Elevate(float RelativeSpeed)
 
 	SetRelativeRotation(FRotator(Elevation, 0, 0));
 }
-
-

@@ -6,12 +6,31 @@
 #include "Projectile.h"
 #include "ConstructorHelpers.h"
 
-
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
 	// Turn off tick
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
+}
+
+void UTankAimingComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	//First Fire should be after initial Reload
+	LastFireTime = FPlatformTime::Seconds();
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+{
+	if((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds)
+	{
+		FiringState = EFiringState::Reloading;
+	}
+	else if ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds)
+	{
+		FiringState = EFiringState::Aiming;
+	}
+	//TODO Handle Aiming and Locked States
 }
 
 void UTankAimingComponent::Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
@@ -19,7 +38,6 @@ void UTankAimingComponent::Initialize(UTankBarrel* BarrelToSet, UTankTurret* Tur
 	Barrel = BarrelToSet;
 	Turret = TurretToSet;
 }
-
 
 void UTankAimingComponent::AimAt(FVector HitLocation)
 {
@@ -60,7 +78,6 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 	
-	
 	Barrel->Elevate(DeltaRotator.Pitch);
 }
 
@@ -77,9 +94,7 @@ void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
 
 void UTankAimingComponent::Fire()
 {
-	bool IsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
-
-	if (Barrel && IsReloaded && ProjectileBlueprint)
+	if ((FiringState != EFiringState::Reloading) && Barrel && ProjectileBlueprint)
 	{
 		//Spawn a projectile at the barrel muzzle socket location
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>

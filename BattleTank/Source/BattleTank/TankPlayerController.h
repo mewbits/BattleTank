@@ -11,9 +11,8 @@
 //Forward Declaration
 class UTankAimingComponent;
 
-
 /**
- * Responsible for helping the player aim
+ * Responsible for helping the player aim, using the aiming component
  */
 UCLASS()
 class BATTLETANK_API ATankPlayerController : public APlayerController

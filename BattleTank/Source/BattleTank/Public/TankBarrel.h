@@ -17,7 +17,6 @@ public:
 	void Elevate(float RelativeSpeed);
 
 private:
-	
 	// Sets default values for this Static Mesh Component's properties
 	UTankBarrel();
 	
@@ -32,6 +31,4 @@ private:
 	// Maximum elevation in degrees the barrel can move to.
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float MaxElevationDegrees = 20.f;
-	
-	
 };
