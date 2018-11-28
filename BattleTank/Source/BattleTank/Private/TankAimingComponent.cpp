@@ -18,6 +18,7 @@ void UTankAimingComponent::BeginPlay()
 	Super::BeginPlay();
 	//First Fire should be after initial Reload
 	LastFireTime = GetWorld()->GetTimeSeconds();
+	CurrentAmmo = MaxAmmo;
 }
 
 void UTankAimingComponent::Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
@@ -29,7 +30,12 @@ void UTankAimingComponent::Initialize(UTankBarrel* BarrelToSet, UTankTurret* Tur
 void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime,TickType, ThisTickFunction);
-	if((GetWorld()->GetTimeSeconds() - LastFireTime) < ReloadTimeInSeconds)
+	if(CurrentAmmo <= 0)
+	{
+		FiringState = EFiringState::OutOfAmmo;
+	}
+
+	else if((GetWorld()->GetTimeSeconds() - LastFireTime) < ReloadTimeInSeconds)
 	{
 		FiringState = EFiringState::Reloading;
 	}
@@ -41,6 +47,16 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 	{
 		FiringState = EFiringState::Locked;
 	}
+}
+
+EFiringState UTankAimingComponent::GetFiringState() const
+{
+	return FiringState;
+}
+
+int UTankAimingComponent::GetRemainingAmmo() const
+{
+	return CurrentAmmo;
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation)
@@ -93,7 +109,15 @@ void UTankAimingComponent::MoveTurretTowards()
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - TurretRotator;
 
-	Turret->Pivot(DeltaRotator.Yaw);
+	if (FMath::Abs(DeltaRotator.Yaw) < 180) 
+	{
+		Turret->Pivot(DeltaRotator.Yaw);
+	}
+
+	else 
+	{
+		Turret->Pivot(-DeltaRotator.Yaw);
+	}
 }
 
 bool UTankAimingComponent::IsBarrelMoving()
@@ -105,7 +129,7 @@ bool UTankAimingComponent::IsBarrelMoving()
 
 void UTankAimingComponent::Fire()
 {
-	if ((FiringState != EFiringState::Reloading) && Barrel && ProjectileBlueprint)
+	if ((FiringState != EFiringState::Reloading) && CurrentAmmo > 0 && Barrel && ProjectileBlueprint)
 	{
 		//Spawn a projectile at the barrel muzzle socket location
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>
@@ -117,6 +141,7 @@ void UTankAimingComponent::Fire()
 
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = GetWorld()->GetTimeSeconds();
+		CurrentAmmo = FMath::Clamp<int>((CurrentAmmo --), 0, MaxAmmo);
 	}
 
 }

@@ -7,10 +7,7 @@
 // Sets default values
 UTankBarrel::UTankBarrel()
 {
-	//Mesh
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>StaticMeshBarrel(TEXT("StaticMesh'/Game/Meshes/Static/Tank/SM_TankBarrel.SM_TankBarrel'"));
-	if (StaticMeshBarrel.Object)
-		SetStaticMesh(StaticMeshBarrel.Object);
+	
 }
 
 void UTankBarrel::Elevate(float RelativeSpeed)
