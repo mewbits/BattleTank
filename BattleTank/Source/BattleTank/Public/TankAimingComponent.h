@@ -34,14 +34,17 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringState FiringState = EFiringState::Reloading;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	int32 MaxAmmo = 3;
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	int32 MaxAmmo = 50;
+
+	int32 CurrentAmmo = 0;
 
 	// Time inbetween Tank Rounds
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float ReloadTimeInSeconds = 3.f;
+	float ReloadTimeInSeconds = 0.5f;
 
 	float LastFireTime = 0.f;
+
 
 public:	
 
@@ -63,7 +66,7 @@ public:
 	EFiringState GetFiringState() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	int GetRemainingAmmo() const;
+	int32 GetRemainingAmmo() const;
 
 private:
 	
@@ -85,7 +88,5 @@ private:
 	void MoveTurretTowards();
 
 	bool IsBarrelMoving();
-
-	int32 CurrentAmmo = 0;
 
 };

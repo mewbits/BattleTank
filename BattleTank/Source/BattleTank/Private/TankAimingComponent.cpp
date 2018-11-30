@@ -54,7 +54,7 @@ EFiringState UTankAimingComponent::GetFiringState() const
 	return FiringState;
 }
 
-int UTankAimingComponent::GetRemainingAmmo() const
+int32 UTankAimingComponent::GetRemainingAmmo() const
 {
 	return CurrentAmmo;
 }
@@ -141,7 +141,7 @@ void UTankAimingComponent::Fire()
 
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = GetWorld()->GetTimeSeconds();
-		CurrentAmmo = FMath::Clamp<int>((CurrentAmmo --), 0, MaxAmmo);
+		CurrentAmmo --;
 	}
 
 }
