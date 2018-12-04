@@ -25,5 +25,5 @@ private:
 	
 	// Maximum degrees the Turret can move per second
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-		float MaxDegreesPerSecond = 10.f;
+		float MaxDegreesPerSecond = 20.f;
 };
