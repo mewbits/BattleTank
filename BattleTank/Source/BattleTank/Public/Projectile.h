@@ -23,6 +23,9 @@ public:
 
 	void LaunchProjectile(float Speed);
 
+	UFUNCTION(BlueprintCallable, Category ="Collision")
+	void OnHit();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -31,8 +34,8 @@ protected:
 
 private:
 
-	UFUNCTION()
-	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	//UFUNCTION()
+	//void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 	
 	// Moves the projectile
 	UProjectileMovementComponent * ProjectileMovement = nullptr;

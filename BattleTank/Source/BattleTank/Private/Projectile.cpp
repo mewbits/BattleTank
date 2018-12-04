@@ -37,7 +37,7 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	CollisionMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
+	//CollisionMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 }
 
 // Called every frame
@@ -54,12 +54,11 @@ void AProjectile::LaunchProjectile(float Speed)
 	LaunchBlast->Activate(true);
 }
 
-void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void AProjectile::OnHit()//UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate(true);
 	CollisionMesh->SetVisibility(false);
 	CollisionMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	Destroy(this);
 }
 
