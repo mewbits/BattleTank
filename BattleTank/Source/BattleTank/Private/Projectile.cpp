@@ -1,10 +1,11 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Raptagon Studios Ltd.
 
 #include "Projectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Runtime/Engine/Classes/Particles/ParticleSystemComponent.h"
 #include "PhysicsEngine/RadialForceComponent.h"
+#include "Engine/World.h"
 
 
 // Sets default values
@@ -53,8 +54,17 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 {
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate(true);
-	CollisionMesh->SetVisibility(false);
-	CollisionMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CollisionMesh->DestroyComponent();
+
+	FTimerHandle Timer;
+	GetWorld()->GetTimerManager().SetTimer(Timer, this, &AProjectile::OnTimerExpire, DestroyDelay, false);
+
+	if (!ExplosionForce) { return; }
 	ExplosionForce->FireImpulse();
+}
+
+void AProjectile::OnTimerExpire()
+{
+	Destroy();
 }
 
