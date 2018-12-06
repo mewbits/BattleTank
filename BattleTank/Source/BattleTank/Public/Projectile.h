@@ -22,9 +22,7 @@ public:
 
 	void LaunchProjectile(float Speed);
 
-	UFUNCTION(BlueprintCallable, Category ="Collision")
-	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
+	
 protected:
 
 	// Called when the game starts or when spawned
@@ -34,6 +32,10 @@ private:
 
 	// Moves the projectile
 	UProjectileMovementComponent * ProjectileMovement = nullptr;
+
+	UFUNCTION(BlueprintCallable, Category = "Collision")
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent * CollisionMesh = nullptr;

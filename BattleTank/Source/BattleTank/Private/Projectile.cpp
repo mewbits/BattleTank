@@ -39,7 +39,7 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//CollisionMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
+	CollisionMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 }
 
 void AProjectile::LaunchProjectile(float Speed)
