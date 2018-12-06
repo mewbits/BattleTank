@@ -8,15 +8,14 @@
 
 class UProjectileMovementComponent;
 class UParticleSystemComponent;
+class URadialForceComponent;
 
 UCLASS()
 class BATTLETANK_API AProjectile : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+public:
 
 	// Sets default values for this actor's properties
 	AProjectile();
@@ -24,19 +23,15 @@ public:
 	void LaunchProjectile(float Speed);
 
 	UFUNCTION(BlueprintCallable, Category ="Collision")
-	void OnHit();
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 protected:
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-
-
 private:
 
-	//UFUNCTION()
-	//void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-	
 	// Moves the projectile
 	UProjectileMovementComponent * ProjectileMovement = nullptr;
 
@@ -48,5 +43,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UParticleSystemComponent * ImpactBlast = nullptr;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	URadialForceComponent * ExplosionForce = nullptr;
 	
 };
